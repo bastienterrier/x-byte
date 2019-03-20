@@ -1,35 +1,25 @@
 <template>
-  <div>
-    <ArticleOverview
-      v-for="(article, i) in articles"
-      :key="`article-${i}`"
-      :item="article"
-    />
-  </div>
+  <v-layout row wrap>
+    <v-flex
+      v-for="course in courses"
+      :key="`course-${course.courseId}-overview`"
+      grid-list-md
+      xs4
+    >
+      <CourseArticlesOverview :item="course" />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import * as axios from 'axios'
-import ArticleOverview from '../components/article_overview.vue'
+import CourseArticlesOverview from '../components/course_articles_overview.vue'
 
 export default {
-  components: { ArticleOverview },
+  components: { CourseArticlesOverview },
   computed: {
-    articles() {
-      return this.$store.state.articles
+    courses() {
+      return this.$store.state.courses
     }
-  },
-  created() {
-    const X_BYTE_API = process.env.X_BYTE_API
-
-    axios
-      .get(`${X_BYTE_API}/articles`)
-      .then(response => {
-        this.$store.commit('loadArticles', response.data)
-      })
-      .catch(err => {
-        throw err
-      })
   }
 }
 </script>

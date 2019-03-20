@@ -1,0 +1,10 @@
+.course-link {
+  color: #fff;
+}
+.course-link:hover {
+  color: #999;
+}
+.inherit-css {
+  color: inherit;
+  text-decoration: inherit;
+}

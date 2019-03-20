@@ -2,12 +2,20 @@
   <v-card color="blue-grey darken-2" class="white--text">
     <v-card-title primary-title>
       <div>
-        <div class="headline">{{ item.title }}</div>
-        <span>{{ firstWords }}</span>
+        <div class="headline">
+          <nuxt-link :to="`/articles/${item.articleId}`" class="inherit-css">{{
+            item.articleTitle
+          }}</nuxt-link>
+        </div>
+        <span>{{ articleOverview }}</span>
       </div>
     </v-card-title>
     <v-card-actions>
-      <v-btn dark>Read more</v-btn>
+      <v-btn dark>
+        <nuxt-link :to="`/articles/${item.articleId}`" class="inherit-css"
+          >Read more</nuxt-link
+        >
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -16,13 +24,8 @@
 export default {
   props: ['item'], // item as article
   computed: {
-    firstWords() {
-      return this.item.content.substring(0, 150) + '...'
-    }
-  },
-  methods: {
-    updateOptions() {
-      this.$store.commit('updateOptions', this.item)
+    articleOverview() {
+      return this.item.articleContent.substring(0, 150) + '...'
     }
   }
 }

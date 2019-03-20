@@ -32,37 +32,44 @@
       <v-btn @click.stop="clipped = !clipped" icon>
         <v-icon>web</v-icon>
       </v-btn>
-      <v-btn @click.stop="fixed = !fixed" icon>
+      <!--<v-btn @click.stop="fixed = !fixed" icon>
         <v-icon>remove</v-icon>
-      </v-btn>
+      </v-btn>-->
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <span v-for="(course, i) in courses" :key="`course-${i}`">
+        <a class="course-link" src="toto">{{ course.courseName }}</a>
+        <span v-if="i < courses.length - 1">&nbsp;|&nbsp;</span>
+      </span>
+      <v-spacer />
       <v-btn @click.stop="rightDrawer = !rightDrawer" icon>
-        <v-icon>menu</v-icon>
+        <v-icon>account_circle</v-icon>
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container grid-list-md>
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+    <v-navigation-drawer v-model="rightDrawer" :right="true" temporary fixed>
       <v-list>
-        <v-list-tile @click.native="right = !right">
+        <v-list-tile>
           <v-list-tile-action>
-            <v-icon light>compare_arrows</v-icon>
+            <v-icon light>account_circle</v-icon>
           </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
+          <v-list-tile-title>Member</v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
+      <span>&copy; 2019 - Powered by Masterdevil</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import * as axios from 'axios'
+
 export default {
   data() {
     return {
@@ -84,8 +91,43 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'X-Byte'
     }
+  },
+  computed: {
+    courses() {
+      return this.$store.state.courses
+    }
+  },
+  created() {
+    const X_BYTE_API = process.env.X_BYTE_API
+
+    axios
+      .get(`${X_BYTE_API}/courses`)
+      .then(response => {
+        this.$store.commit('loadCourses', response.data)
+      })
+      .catch(err => {
+        throw err
+      })
+
+    axios
+      .get(`${X_BYTE_API}/articles`)
+      .then(response => {
+        this.$store.commit('loadArticles', response.data)
+      })
+      .catch(err => {
+        throw err
+      })
+
+    axios
+      .get(`${X_BYTE_API}/comments`)
+      .then(response => {
+        this.$store.commit('loadComments', response.data)
+      })
+      .catch(err => {
+        throw err
+      })
   }
 }
 </script>
