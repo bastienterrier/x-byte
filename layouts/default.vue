@@ -1,48 +1,24 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-tile
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title" />
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
+    <v-navigation-drawer v-model="layout_drawer" fixed app>
+      <Chat />
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn @click.stop="miniVariant = !miniVariant" icon>
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
+    <v-toolbar fixed app>
+      <v-btn @click="layout_drawer = !layout_drawer" icon>
+        <v-icon>message</v-icon>
       </v-btn>
-      <v-btn @click.stop="clipped = !clipped" icon>
-        <v-icon>web</v-icon>
-      </v-btn>
-      <!--<v-btn @click.stop="fixed = !fixed" icon>
-        <v-icon>remove</v-icon>
-      </v-btn>-->
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title>
+        <nuxt-link to="/" class="inherit-css">X-Byte</nuxt-link>
+      </v-toolbar-title>
       <v-spacer />
       <span v-for="(course, i) in courses" :key="`course-${i}`">
-        <a class="course-link" src="toto">{{ course.courseName }}</a>
+        <nuxt-link :to="`/courses/${course.courseId}`" class="course-link">{{
+          course.courseName
+        }}</nuxt-link>
         <span v-if="i < courses.length - 1">&nbsp;|&nbsp;</span>
       </span>
       <v-spacer />
-      <v-btn @click.stop="rightDrawer = !rightDrawer" icon>
+      <v-btn @click.stop="layout_rightDrawer = !layout_rightDrawer" icon>
         <v-icon>account_circle</v-icon>
       </v-btn>
     </v-toolbar>
@@ -51,17 +27,15 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="true" temporary fixed>
-      <v-list>
-        <v-list-tile>
-          <v-list-tile-action>
-            <v-icon light>account_circle</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Member</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
+    <v-navigation-drawer
+      v-model="layout_rightDrawer"
+      :right="true"
+      temporary
+      fixed
+    >
+      <UserDrawer />
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
+    <v-footer app>
       <span>&copy; 2019 - Powered by Masterdevil</span>
     </v-footer>
   </v-app>
@@ -69,34 +43,30 @@
 
 <script>
 import * as axios from 'axios'
+import UserDrawer from '~/components/user_drawer.vue'
+import Chat from '~/components/chat.vue'
 
 export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'bubble_chart',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'X-Byte'
-    }
-  },
+  components: { UserDrawer, Chat },
   computed: {
     courses() {
       return this.$store.state.courses
+    },
+    layout_drawer: {
+      get() {
+        return this.$store.state.layout_drawer
+      },
+      set(val) {
+        this.$store.commit('setLayout_drawer', val)
+      }
+    },
+    layout_rightDrawer: {
+      get() {
+        return this.$store.state.layout_rightDrawer
+      },
+      set(val) {
+        this.$store.commit('setLayout_rightDrawer', val)
+      }
     }
   },
   created() {
@@ -124,6 +94,15 @@ export default {
       .get(`${X_BYTE_API}/comments`)
       .then(response => {
         this.$store.commit('loadComments', response.data)
+      })
+      .catch(err => {
+        throw err
+      })
+
+    axios
+      .get(`${X_BYTE_API}/users`)
+      .then(response => {
+        this.$store.commit('loadUsers', response.data)
       })
       .catch(err => {
         throw err

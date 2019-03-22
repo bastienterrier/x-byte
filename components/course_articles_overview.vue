@@ -2,15 +2,19 @@
   <v-card color="blue" class="white--text">
     <v-card-title primary-title>
       <div>
-        <div class="headline">{{ item.courseName }}</div>
+        <div class="headline">
+          <nuxt-link :to="`/courses/${item.courseId}`" class="inherit-css">{{
+            item.courseName
+          }}</nuxt-link>
+        </div>
 
         <div>
-          <flex
+          <v-flex
             v-for="article in lastCourseArticles"
             :key="`course-article-${article.articleId}}`"
           >
             <ArticleOverview :item="article" />
-          </flex>
+          </v-flex>
         </div>
       </div>
     </v-card-title>

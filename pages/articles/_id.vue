@@ -1,20 +1,23 @@
 <template>
-  <div>Article {{ article.articleId }}</div>
+  <div>
+    <Article :item="extendedArticle" />
+  </div>
 </template>
 
 <script>
+import Article from '~/components/article.vue'
 export default {
+  components: { Article },
   computed: {
-    article() {
-      return this.$store.state.currentArticle
+    extendedArticle() {
+      return this.$store.state.currentExtendedArticle
     }
   },
   validate({ params }) {
-    // Doit être un nombre
     return /^\d+$/.test(params.id)
   },
   fetch({ store, params }) {
-    store.commit('setCurrentArticle', params.id)
+    store.commit('setCurrentExtendedArticle', params.id)
   }
 }
 </script>

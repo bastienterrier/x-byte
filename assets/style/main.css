@@ -1,10 +1,54 @@
+/* GLOBAL */
+html {
+  overflow: auto;
+}
+
+.inherit-css {
+  color: inherit;
+  text-decoration: inherit;
+}
+a {
+  text-decoration: none;
+}
+
+/* COURSE */
 .course-link {
   color: #fff;
 }
 .course-link:hover {
   color: #999;
 }
-.inherit-css {
-  color: inherit;
-  text-decoration: inherit;
+.course-stats-comments {
+  margin-right: 30px;
+}
+
+/* ARTICLE */
+.article-preface {
+  border-left: solid black 2px;
+  padding-left: 20px;
+}
+.article-content {
+  margin-top: 20px;
+}
+
+/* COMMENTS */
+.comments {
+  margin-top: 10px;
+}
+.comment-content,
+.comment-writer {
+  border: solid #eee 1px;
+  border-radius: 20px;
+  padding: 20px;
+}
+.comment-writer {
+  background-color: green;
+}
+
+/* USER */
+.user-link {
+  color: #fff;
+}
+.user-link:hover {
+  color: #999;
 }
