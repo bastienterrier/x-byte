@@ -13,9 +13,7 @@ const createStore = () => {
       layout_drawer: false,
       layout_rightDrawer: false,
       chatMessages: [],
-
-      isConnected: false,
-      socketMessage: ''
+      connectedUser: null
     },
     mutations: {
       loadArticles(state, articles) {
@@ -65,15 +63,8 @@ const createStore = () => {
       addMessageToStore(state, payload) {
         state.chatMessages.push(payload)
       },
-
-      SOCKET_CONNECT(state) {
-        state.isConnected = true
-      },
-      SOCKET_DISCONNECT(state) {
-        state.isConnected = false
-      },
-      SOCKET_MESSAGECHANNEL(state, message) {
-        state.socketMessage = message
+      setConnectedUser(state, payload) {
+        state.connectedUser = payload
       }
     }
   })

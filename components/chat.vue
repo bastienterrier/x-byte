@@ -18,8 +18,8 @@
 
 <script>
 // import VueSocketIO from 'vue-socket.io'
-const io = require('socket.io-client')
-const socket = io('http://localhost:3333')
+// const io = require('socket.io-client')
+// const socket = io('http://localhost:3333')
 
 export default {
   data: function() {
@@ -37,7 +37,7 @@ export default {
   methods: {
     sendMessage(msg) {
       this.$store.commit('addMessageToStore', msg)
-      socket.emit('message', msg)
+      // socket.emit('message', msg)
 
       this.msg = ''
     }
