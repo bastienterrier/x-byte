@@ -38,9 +38,12 @@ export default {
       axios
         .post(`${X_BYTE_API}/login`, user)
         .then(response => {
-          this.successOrErrorMessage = response.data[0]
-
-          this.$store.commit('setConnectedUser', response.data[0])
+          if (response.data.length === 0) {
+            this.successOrErrorMessage =
+              "<span class='message-error'>Pseudo et/ou mot de passe incorrect(s).</span>"
+          } else {
+            this.$store.commit('setConnectedUser', response.data[0])
+          }
         })
         .catch(err => {
           this.successOrErrorMessage = err

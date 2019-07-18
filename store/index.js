@@ -15,6 +15,14 @@ const createStore = () => {
       chatMessages: [],
       connectedUser: null
     },
+    getters: {
+      getUserArticles: state => user => {
+        return state.articles.filter(a => a.articleWriter === user.userId)
+      },
+      getUserCourses: state => user => {
+        return state.courses.filter(c => c.courseWriter === user.userId)
+      }
+    },
     mutations: {
       loadArticles(state, articles) {
         state.articles = articles
@@ -65,6 +73,9 @@ const createStore = () => {
       },
       setConnectedUser(state, payload) {
         state.connectedUser = payload
+      },
+      disconnectUser(state) {
+        state.connectedUser = null
       }
     }
   })

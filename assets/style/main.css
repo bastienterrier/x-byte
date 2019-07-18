@@ -11,6 +11,14 @@ a {
   text-decoration: none;
 }
 
+.message-error {
+  color: #ffc800;
+}
+
+h1 span {
+  font-size: 0.6em;
+}
+
 /* COURSE */
 .course-link {
   color: #fff;
@@ -18,8 +26,9 @@ a {
 .course-link:hover {
   color: #999;
 }
-.course-stats-comments {
-  margin-right: 30px;
+.course-stats-comments,
+.course-stats-articles {
+  margin-right: 20px;
 }
 
 /* ARTICLE */

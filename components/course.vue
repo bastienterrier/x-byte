@@ -26,7 +26,7 @@
                 {{ item.author.userPseudo }}
               </div>
               <div class="course-description-content">
-                See his other courses...
+                <UserCourses :item="item.author" :received="item.course" />
               </div>
             </div>
           </v-card-title>
@@ -39,6 +39,15 @@
           <v-card-title primary-title>
             <div>
               <div class="headline course-autor-name">Stats</div>
+
+              <span class="course-stats-articles">
+                <v-badge right bottom>
+                  <template v-slot:badge>
+                    <span>{{ numberArticles }}</span>
+                  </template>
+                  <v-icon color="grey lighten-1">library_books</v-icon>
+                </v-badge>
+              </span>
               <span class="course-stats-comments">
                 <v-badge right bottom>
                   <template v-slot:badge>
@@ -65,7 +74,9 @@
 </template>
 
 <script>
+import UserCourses from './user_courses.vue'
 export default {
+  components: { UserCourses },
   props: ['item'], // item as ExtendedCourse
   computed: {
     numberComments() {
@@ -77,6 +88,9 @@ export default {
       return this.$store.state.users.filter(u =>
         this.item.articles.some(a => a.articleWriter === u.userId)
       ).length
+    },
+    numberArticles() {
+      return this.item.articles.length
     }
   }
 }

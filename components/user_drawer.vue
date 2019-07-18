@@ -7,6 +7,9 @@
           <hr />
           <Login />
         </div>
+        <div v-else>
+          <AccountOverview />
+        </div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -15,9 +18,10 @@
 <script>
 import CreateAccount from './create_account.vue'
 import Login from './login.vue'
+import AccountOverview from './account_overview'
 
 export default {
-  components: { CreateAccount, Login },
+  components: { CreateAccount, Login, AccountOverview },
   computed: {
     connectedUser() {
       return this.$store.state.connectedUser
